@@ -51,6 +51,18 @@ public class PostController {
         }
     }
 
+    @GetMapping("/public/comments")
+    public ResponseEntity<List<Map<String,Object>>> getComments(@RequestParam String id_str) {
+        try {
+            int id = Integer.parseInt(id_str);
+            return ResponseEntity.ok().body(postService.getComments(id));
+        }catch(PostException err) {
+            return ResponseEntity.badRequest().body(null);
+        }catch(Exception err){
+            return ResponseEntity.internalServerError().body(null);
+        }
+    }
+
     /**
      * For later restrictions this has to be served in a controller!
      */

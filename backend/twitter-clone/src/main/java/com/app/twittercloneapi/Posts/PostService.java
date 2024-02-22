@@ -134,4 +134,13 @@ public class PostService {
             
         return list;
     }
+
+    public List<Map<String,Object>> getComments(int id) throws Exception {
+        List<Map<String,Object>> comments = new ArrayList<>();
+        List<Post> result = postRepository.postCommentsDateOrderInRange(id);
+        for(Post p : result) {
+            comments.add(p.toMap());
+        }
+        return comments;
+    }
 }

@@ -47,5 +47,6 @@
 }
 
 .commentCreator {
+    border-top: 1px var(--bs-primary-border-subtle) solid;
     width: 100%;
 }

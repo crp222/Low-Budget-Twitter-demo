@@ -21,14 +21,14 @@ export default function NavBar(params) {
     <Nav style={{width:"300px"}} className='mt-2 border mx-auto d-flex align-items-center justify-content-center' variant="pills" activeKey="1">
         <Nav.Item>
             <Nav.Link href="/">
-                Home
+                Főoldal
             </Nav.Link>
         </Nav.Item>
         <Nav.Item>
             {
                 !User ? 
                 <Nav.Link title="Item" href='/login'>
-                    Login
+                    Bejelentkezés
                 </Nav.Link> 
                 :
                 <NavDropdown title="Profil">
