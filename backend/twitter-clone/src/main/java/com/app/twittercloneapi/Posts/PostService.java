@@ -123,6 +123,13 @@ public class PostService {
         }
     }
 
+    public Map<String,Object> getPost(int id) throws Exception {
+        Post post = postRepository.findById(id).orElse(null);
+        if(post == null)
+            throw new PostException("Poszt nem található!");
+        return post.toMap();
+    }
+
     public List<Map<String,Object>> getPostsWithOffset(int offset,int amount) throws Exception{
         if(amount > 100)
             throw new PostException("Nem lehet 100-nal tobbet lekerni egyszerre!");
@@ -142,5 +149,12 @@ public class PostService {
             comments.add(p.toMap());
         }
         return comments;
+    }
+
+    public Map<String,Object> getPostWithAll(int id) throws Exception {
+        Map<String,Object> res = getPost(id);
+        res.put("resource",findResource(res.get("resource").toString()));
+        res.put("comments",getComments(id));
+        return res;
     }
 }

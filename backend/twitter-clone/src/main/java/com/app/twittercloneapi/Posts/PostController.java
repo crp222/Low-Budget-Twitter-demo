@@ -76,4 +76,28 @@ public class PostController {
             return ResponseEntity.internalServerError().body(null);
         }
     }
+
+    @GetMapping("/public/post/{id}")
+    public ResponseEntity<Map<String,Object>> getPost(@PathVariable String id){
+        try {
+            int id_int = Integer.parseInt(id);
+            return ResponseEntity.ok().body(postService.getPost(id_int));
+        }catch(PostException err){
+            return ResponseEntity.badRequest().body(null);
+        }catch(Exception err){
+            return ResponseEntity.internalServerError().body(null);
+        }
+    }
+
+    @GetMapping("/public/post_withAll/{id}")
+    public ResponseEntity<Map<String,Object>> getPostWithAll(@PathVariable String id){
+        try {
+            int id_int = Integer.parseInt(id);
+            return ResponseEntity.ok().body(postService.getPostWithAll(id_int));
+        }catch(PostException err){
+            return ResponseEntity.badRequest().body(null);
+        }catch(Exception err){
+            return ResponseEntity.internalServerError().body(null);
+        }
+    }
 }

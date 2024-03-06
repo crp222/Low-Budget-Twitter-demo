@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import styles from "../styles/post.module.css"
-import ProfilePicture from './ProfilePicture';
+import styles from "../../styles/post.module.css"
+import ProfilePicture from "../Profile/ProfilePicture"
+import ENV from "../../env"
 
 export default function Comment(params) {
 
@@ -22,7 +23,7 @@ export default function Comment(params) {
     const getPostUser = async () => {
         if (!Post.user)
             return;
-        let result = await fetch("http://localhost:8080/public/user/get?id_str=" + Post.user);
+        let result = await fetch(ENV.API_DOMAIN+"/public/user/get?id_str=" + Post.user);
         if (result.status === 200)
             setPostUser(await result.json());
 
@@ -31,7 +32,7 @@ export default function Comment(params) {
     const getPostResource = async () => {
         if (Post.resource == -1)
             return;
-        let result = await fetch("http://localhost:8080/public/post_resource/" + Post.resource);
+        let result = await fetch(ENV.API_DOMAIN+"/public/post_resource/" + Post.resource);
         let resource_dom = ""
         if (result.status === 200) {
             let data = await result.json();

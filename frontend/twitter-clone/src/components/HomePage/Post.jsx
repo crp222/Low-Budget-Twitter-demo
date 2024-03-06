@@ -1,11 +1,12 @@
 import React, { useEffect, useReducer, useState } from 'react'
-import styles from "../styles/post.module.css"
-import ProfilePicture from "./ProfilePicture"
+import styles from "../../styles/post.module.css"
+import ProfilePicture from "../Profile/ProfilePicture"
 import CreatePost from "./CreatePost"
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
 import AlertLink from 'react-bootstrap/AlertLink'
-import Comment from './Comment';
+import Comment from './Comment'
+import ENV from "../../env"
 
 export default function Post(params) {
 
@@ -15,6 +16,7 @@ export default function Post(params) {
   const [ResourceDom, setResourceDom] = useState();
   const [Comments, setComments] = useState([]);
   const [CommentsLoaded, changeCommentsLoaded] = useReducer((state, action) => { return !state }, false);
+  const [MoreComments, setMoreComments] = useState(false);
 
   useEffect(() => {
     setUser(params.user);
@@ -30,7 +32,7 @@ export default function Post(params) {
   const getPostUser = async () => {
     if (!Post.user)
       return;
-    let result = await fetch("http://localhost:8080/public/user/get?id_str=" + Post.user);
+    let result = await fetch(ENV.API_DOMAIN+"/public/user/get?id_str=" + Post.user);
     if (result.status === 200)
       setPostUser(await result.json());
 
@@ -39,7 +41,7 @@ export default function Post(params) {
   const getPostResource = async () => {
     if (Post.resource == -1)
       return;
-    let result = await fetch("http://localhost:8080/public/post_resource/" + Post.resource);
+    let result = await fetch(ENV.API_DOMAIN+"/public/post_resource/" + Post.resource);
     let resource_dom = ""
     if (result.status === 200) {
       let data = await result.json();
@@ -53,9 +55,15 @@ export default function Post(params) {
 
   const loadComments = async () => {
     let params = `id_str=${Post.id}`;
-    let result = await fetch("http://localhost:8080/public/comments?" + params);
+    let result = await fetch(ENV.API_DOMAIN+"/public/comments?" + params);
     if (result.status === 200) {
-      setComments(await result.json());
+      /**@type {Array} */
+      let comments = await result.json();
+      if(comments.length > 2){
+        setComments(comments.splice(0,2))
+        setMoreComments(comments.length);
+      }else
+        setComments(comments);
     }
   }
 
@@ -95,6 +103,7 @@ export default function Post(params) {
                         </Row>
                       ))
                     }
+                    {MoreComments ? <a href={'/post/'+Post.id} className='d-block text-center'>{MoreComments} További hozzászólás betöltése</a> : ""}                
                   </Container>
                   :
                   <div className='p-2 text-align-center'>Nincsenek hozzászólások</div>

@@ -1,8 +1,8 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react'
-import CreatePost from './components/CreatePost';
+import CreatePost from '../components/HomePage/CreatePost';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Post from './components/Post';
+import Post from '../components/HomePage/Post';
 
 export default function Home(params) {
 

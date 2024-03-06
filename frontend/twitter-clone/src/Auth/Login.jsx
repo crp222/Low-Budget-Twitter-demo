@@ -15,6 +15,7 @@ export default function Login() {
             if(res.status == 200){
                 res.text().then(token => {
                     console.log(token);
+                    // TODO : expiration time
                     Cookie.set("usertoken",token);
                     alert("Siekeres bejelentkezes!");
                     window.location = "/";

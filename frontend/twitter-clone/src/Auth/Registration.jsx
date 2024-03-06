@@ -10,7 +10,6 @@ export default function Registration() {
     const [DisplayedName, setDisplayedName] = useState("");
     const [ProfilePicture, setProfilePicture] = useState("");
     const profilePicutreRef = useRef();
-    const dropzoneRef = useRef();
 
     /**
      * 

@@ -7,11 +7,12 @@ import {
   Link,
 } from "react-router-dom";
 import Registration from "./Auth/Registration";
-import Home from "./Home"
+import Home from "./Pages/Home"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavBar from "./NavBar"
 import Login from "./Auth/Login"
 import Cookie from "js-cookie"
+import PostPage from "./Pages/PostPage";
 
 async function getCurrentUserInformation() {
   let token = "";
@@ -46,6 +47,10 @@ async function startApp() {
       path: "/login",
       element: <Login></Login>,
     },
+    {
+      path: "/post/:id",
+      element : <PostPage user={userInfo}></PostPage>
+    }
   ]);
 
   createRoot(document.getElementById("root")).render(

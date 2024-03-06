@@ -6,10 +6,7 @@ export default function ProfilePicture(params) {
     const [User, setUser] = useState({profile_picture:null});
 
     useEffect(() => {
-        if(params.user)
-          setUser(params.user);
-        else
-          setUser({profile_picture:null})
+      params.user ? setUser(params.user) : null;
     }, [params]);
 
   return (

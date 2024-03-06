@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
-import styles from "../styles/createpost.module.css";
-import ProfilePicture from './ProfilePicture';
-import Cookies from "js-cookie";
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Image from 'react-bootstrap/Image';
+import styles from "../../styles/createpost.module.css"
+import ProfilePicture from "../Profile/ProfilePicture"
+import Cookies from "js-cookie"
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Image from 'react-bootstrap/Image'
 import Tooltip from "react-bootstrap/Tooltip"
+import ENV from "../../env"
 
 export default function CreatePost(params) {
 
@@ -50,7 +51,7 @@ export default function CreatePost(params) {
           text : PostInput,
           parent : params.parent ? params.parent : -1,
       }
-      let result = await fetch("http://localhost:8080/post/create",{
+      let result = await fetch(ENV.API_DOMAIN+"/post/create",{
         method:"post",
         body : JSON.stringify(body),
         headers : {

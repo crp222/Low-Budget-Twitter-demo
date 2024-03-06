@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Cookie from "js-cookie"
-import ProfilePicture from './components/ProfilePicture';
+import ProfilePicture from './components/Profile/ProfilePicture';
 
 export default function NavBar(params) {
 
