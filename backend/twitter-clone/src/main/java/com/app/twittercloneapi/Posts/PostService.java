@@ -42,6 +42,7 @@ public class PostService {
      * @return name of the saved file
      * @throws Exception
      */
+    // TODO : There is a bug where it doesn't add a new image to the resources instead just returns one of the existing ones!
     private int saveResource(String fileBase64,String fileType) throws Exception {
         if(fileBase64 == null || fileBase64.isEmpty() || fileType == null)
             return -1;
@@ -123,20 +124,20 @@ public class PostService {
         }
     }
 
-    public Map<String,Object> getPost(int id) throws Exception {
-        Post post = postRepository.findById(id).orElse(null);
-        if(post == null)
-            throw new PostException("Poszt nem található!");
-        return post.toMap();
-    }
-
     public List<Map<String,Object>> getPostsWithOffset(int offset,int amount) throws Exception{
         if(amount > 100)
             throw new PostException("Nem lehet 100-nal tobbet lekerni egyszerre!");
         List<Map<String,Object>> list = new ArrayList<>();
         List<Post> result = postRepository.postsDateOrderInRange(amount,offset);
         for(Post p : result) {
-            list.add(p.toMap());
+            var m = p.toMap();
+            try {
+                m.put("resource",findResource(m.get("resource").toString()));
+            }catch(Exception e){
+                m.put("resource",null);
+            }
+            m.put("user",userInfoService.loadUserById((int)m.get("user")));
+            list.add(m);
         }
             
         return list;
@@ -146,15 +147,30 @@ public class PostService {
         List<Map<String,Object>> comments = new ArrayList<>();
         List<Post> result = postRepository.postCommentsDateOrderInRange(id);
         for(Post p : result) {
-            comments.add(p.toMap());
+            var m = p.toMap();
+            try {
+                m.put("resource",findResource(m.get("resource").toString()));
+            }catch(Exception e){
+                m.put("resource",null);
+            }
+            m.put("user",userInfoService.loadUserById((int)m.get("user")));
+            comments.add(m);
         }
         return comments;
     }
 
-    public Map<String,Object> getPostWithAll(int id) throws Exception {
-        Map<String,Object> res = getPost(id);
-        res.put("resource",findResource(res.get("resource").toString()));
+    public Map<String,Object> getPost(int id) throws Exception {
+        Post post = postRepository.findById(id).orElse(null);
+        if(post == null)
+            throw new PostException("Poszt nem található!");
+        Map<String,Object> res = post.toMap();
+        try {
+            res.put("resource",findResource(res.get("resource").toString()));
+        }catch(Exception e){
+            res.put("resource",null);
+        }
         res.put("comments",getComments(id));
+        res.put("user",userInfoService.loadUserById((int)res.get("user")));
         return res;
     }
 }
