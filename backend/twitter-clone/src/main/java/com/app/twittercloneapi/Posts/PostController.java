@@ -1,7 +1,6 @@
 package com.app.twittercloneapi.Posts;
 
 import java.security.Principal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

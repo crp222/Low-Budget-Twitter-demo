@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import ENV from "../env"
 import styles from "../styles/post.module.css"
 import ProfilePicture from "../components/Profile/ProfilePicture"
@@ -19,10 +19,15 @@ export default function PostPage(params) {
       comments : []
     });
     const [ResourceDom, setResourceDom] = useState();
-
+    let location = useLocation();
 
     useEffect(()=>{
-      console.log(params)
+      setUser(params.user);
+      fetchPostData();
+      window.scrollTo(0,0);
+    },[location])
+
+    useEffect(()=>{
         setUser(params.user);
         fetchPostData();
     },[params])
@@ -31,7 +36,6 @@ export default function PostPage(params) {
         let result = await fetch(ENV.API_DOMAIN+"/public/post/"+id);
         if(result.status === 200){
           let data = await result.json();
-          console.log(data);
           readPostResource(data);
           setPost(data);
         }

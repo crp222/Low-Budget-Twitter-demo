@@ -13,13 +13,14 @@ import NavBar from "./NavBar"
 import Login from "./Auth/Login"
 import Cookie from "js-cookie"
 import PostPage from "./Pages/PostPage";
+import ENV from "./env"
 
 async function getCurrentUserInformation() {
   let token = "";
   if(Cookie.get("usertoken"))
       token = Cookie.get("usertoken");
 
-  let userinfo = await fetch("http://localhost:8080/user/currentuser",{
+  let userinfo = await fetch(ENV.API_DOMAIN+"/user/currentuser",{
       headers:{
           "Authorization" : `${token}`,
       }

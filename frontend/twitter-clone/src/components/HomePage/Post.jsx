@@ -7,6 +7,8 @@ import Row from 'react-bootstrap/Row'
 import AlertLink from 'react-bootstrap/AlertLink'
 import Comment from './Comment'
 import ENV from "../../env"
+import { useNavigate } from "react-router-dom";
+
 
 export default function Post(params) {
 
@@ -23,6 +25,7 @@ export default function Post(params) {
   const [Comments, setComments] = useState([]);
   const [CommentsLoaded, changeCommentsLoaded] = useReducer((state, action) => { return !state }, false);
   const [MoreComments, setMoreComments] = useState(false);
+  let navigate = useNavigate(); 
 
   useEffect(() => {
     setUser(params.user);
@@ -60,7 +63,7 @@ export default function Post(params) {
 
   return (
     <div className={styles.post}>
-      <div className={styles.user} onClick={()=>{window.location.href = "/post/"+Post.id}}>
+      <div className={styles.user} onClick={()=>navigate("/post/"+Post.id)}>
         <ProfilePicture className={styles.userpicture} user={Post.user}></ProfilePicture>
         <div>
           <div className='fs-4'>{Post.user.displayed_name}</div>
@@ -84,7 +87,7 @@ export default function Post(params) {
                     </Row>
                   ))
                 }
-                {MoreComments ? <a href={'/post/'+Post.id} className='d-block text-center'>{MoreComments} További hozzászólás betöltése</a> : ""}                
+                {MoreComments ? <a onClick={()=>navigate('/post/'+Post.id)} className='d-block text-center'>{MoreComments} További hozzászólás betöltése</a> : ""}                
               </Container>
               :
               <div className='p-2 text-align-center'>Nincsenek hozzászólások</div>

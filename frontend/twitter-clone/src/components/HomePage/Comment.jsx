@@ -22,7 +22,6 @@ export default function Comment(params) {
     }, [params]);
 
     useEffect(() => {
-        console.log(Post)
         readPostResource(Post.resource);
     }, [Post])
 
