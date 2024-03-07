@@ -10,8 +10,14 @@ import ENV from "../../env"
 
 export default function Post(params) {
 
-  const [Post, setPosts] = useState({ content: "", resource: "-1", date: "" });
-  const [PostUser, setPostUser] = useState({ displayed_name: "" }); // Creator of this post
+  const [Post, setPosts] = useState({ 
+    content: "", 
+    resource: null, 
+    date: "", 
+    user: {
+      displayed_name : ""
+    } 
+  });
   const [User, setUser] = useState({ displayed_name: "" }); // Current client user 
   const [ResourceDom, setResourceDom] = useState();
   const [Comments, setComments] = useState([]);
@@ -23,35 +29,9 @@ export default function Post(params) {
     setPosts(params.post);
   }, [params]);
 
-
-  useEffect(() => {
-    getPostUser();
-    getPostResource();
-  }, [Post])
-
-  const getPostUser = async () => {
-    if (!Post.user)
-      return;
-    let result = await fetch(ENV.API_DOMAIN+"/public/user/get?id_str=" + Post.user);
-    if (result.status === 200)
-      setPostUser(await result.json());
-
-  }
-
-  const getPostResource = async () => {
-    if (Post.resource == -1)
-      return;
-    let result = await fetch(ENV.API_DOMAIN+"/public/post_resource/" + Post.resource);
-    let resource_dom = ""
-    if (result.status === 200) {
-      let data = await result.json();
-      if (["jpg", "png", "jpeg"].includes(data.filetype))
-        resource_dom = <img src={"data:image/jpg;base64," + data.bytes} />
-      else if (["avi", "mp4"].includes(data.filetype))
-        resource_dom = <iframe src={"data:video/mp4;base64," + data.bytes} />
-    }
-    setResourceDom(resource_dom)
-  }
+  useEffect(()=>{
+      readPostResource(Post.resource);
+  },[Post])
 
   const loadComments = async () => {
     let params = `id_str=${Post.id}`;
@@ -67,12 +47,23 @@ export default function Post(params) {
     }
   }
 
+  const readPostResource = async (resource) => {
+    if (!resource)
+      return;
+    let resource_dom = ""
+    if (["jpg", "png", "jpeg"].includes(resource.filetype))
+      resource_dom = <img src={"data:image/jpg;base64," + resource.bytes} />
+    else if (["avi", "mp4"].includes(resource.filetype))
+      resource_dom = <iframe src={"data:video/mp4;base64," + resource.bytes} />
+    setResourceDom(resource_dom)
+  }
+
   return (
     <div className={styles.post}>
-      <div className={styles.user}>
-        <ProfilePicture className={styles.userpicture} user={PostUser}></ProfilePicture>
+      <div className={styles.user} onClick={()=>{window.location.href = "/post/"+Post.id}}>
+        <ProfilePicture className={styles.userpicture} user={Post.user}></ProfilePicture>
         <div>
-          <div className='fs-4'>{PostUser.displayed_name}</div>
+          <div className='fs-4'>{Post.user.displayed_name}</div>
           <div className='fs-6 fw-light'>{(new Date(Post.date)).toDateString()}</div>
         </div>
       </div>
@@ -80,41 +71,32 @@ export default function Post(params) {
         <div className={styles.content + " fs-5"}>{Post.content}</div>
         {ResourceDom}
       </div>
-      {
-        !params.comment ?
-          <div>
-            {
-              !CommentsLoaded ?
-                <AlertLink onClick={() => { loadComments().then(() => { changeCommentsLoaded() }) }} style={{ display: "block" }} className='p-2 text-align-center fs-6 fw-light text-primary'>
-                  Hozzászólások betöltése!
-                </AlertLink>
-                : ""
-            }
+      <div>
+        {
+          CommentsLoaded ?
+            Comments.length > 0 ?
+              <Container>
+                {
+                  Comments.map((e, i) => (
+                    <Row className='m-0' key={i}>
+                      <hr style={{ width: "100%", color: "var(--bs-primary)", opacity: "0.95" }} />
+                      <Comment commentid={i + "-" + params.postid} user={User} post={e}></Comment>
+                    </Row>
+                  ))
+                }
+                {MoreComments ? <a href={'/post/'+Post.id} className='d-block text-center'>{MoreComments} További hozzászólás betöltése</a> : ""}                
+              </Container>
+              :
+              <div className='p-2 text-align-center'>Nincsenek hozzászólások</div>
+            : 
+            <AlertLink onClick={() => { loadComments().then(() => { changeCommentsLoaded() }) }} style={{ display: "block" }} className='p-2 text-align-center fs-6 fw-light text-primary'>
+              Hozzászólások betöltése!
+            </AlertLink>
+        }
 
-            {
-              CommentsLoaded ?
-                Comments.length > 0 ?
-                  <Container>
-                    {
-                      Comments.map((e, i) => (
-                        <Row className='m-0' key={i}>
-                          <hr style={{ width: "100%", color: "var(--bs-primary)", opacity: "0.95" }} />
-                          <Comment commentid={i + "-" + params.postid} user={User} post={e}></Comment>
-                        </Row>
-                      ))
-                    }
-                    {MoreComments ? <a href={'/post/'+Post.id} className='d-block text-center'>{MoreComments} További hozzászólás betöltése</a> : ""}                
-                  </Container>
-                  :
-                  <div className='p-2 text-align-center'>Nincsenek hozzászólások</div>
-                : ""
-            }
-
-          </div>
-          : ""
-      }
+      </div>
       <div className={styles.commentCreator}>
-        {User ? <CreatePost style={{ width: "90%" }} postid={params.postid} user={User} parent={Post.id}></CreatePost> : ""}
+        {User ? <CreatePost style={{ width: "90%" }} postid={"createpost-"+params.postid} user={User} parent={Post.id}></CreatePost> : ""}
       </div>
     </div>
   )

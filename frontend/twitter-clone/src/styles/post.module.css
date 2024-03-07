@@ -8,6 +8,10 @@
     padding: 0 !important;
 }
 
+.post:hover {
+    cursor: pointer;
+}
+
 .user {
     display: flex;
     align-items: center;
@@ -50,3 +54,4 @@
     border-top: 1px var(--bs-primary-border-subtle) solid;
     width: 100%;
 }
+

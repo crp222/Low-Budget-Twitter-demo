@@ -6,8 +6,14 @@ import ENV from "../../env"
 export default function Comment(params) {
 
     const [User, setUser] = useState({ displayed_name: "" });
-    const [Post, setPosts] = useState({ content: "", resource: "-1", date: "" });
-    const [PostUser, setPostUser] = useState({ displayed_name: "" });
+    const [Post, setPosts] = useState({ 
+        content: "", 
+        resource: null, 
+        date: "", 
+        user: {
+          displayed_name : ""
+        } 
+      });
     const [ResourceDom, setResourceDom] = useState();
 
     useEffect(() => {
@@ -16,40 +22,27 @@ export default function Comment(params) {
     }, [params]);
 
     useEffect(() => {
-        getPostUser();
-        getPostResource();
+        console.log(Post)
+        readPostResource(Post.resource);
     }, [Post])
 
-    const getPostUser = async () => {
-        if (!Post.user)
+    const readPostResource = async (resource) => {
+        if (!resource)
             return;
-        let result = await fetch(ENV.API_DOMAIN+"/public/user/get?id_str=" + Post.user);
-        if (result.status === 200)
-            setPostUser(await result.json());
-
-    }
-
-    const getPostResource = async () => {
-        if (Post.resource == -1)
-            return;
-        let result = await fetch(ENV.API_DOMAIN+"/public/post_resource/" + Post.resource);
         let resource_dom = ""
-        if (result.status === 200) {
-            let data = await result.json();
-            if (["jpg", "png", "jpeg"].includes(data.filetype))
-                resource_dom = <img src={"data:image/jpg;base64," + data.bytes} />
-            else if (["avi", "mp4"].includes(data.filetype))
-                resource_dom = <iframe src={"data:video/mp4;base64," + data.bytes} />
-        }
+        if (["jpg", "png", "jpeg"].includes(resource.filetype))
+            resource_dom = <img src={"data:image/jpg;base64," + resource.bytes} />
+        else if (["avi", "mp4"].includes(resource.filetype))
+            resource_dom = <iframe src={"data:video/mp4;base64," + resource.bytes} />
         setResourceDom(resource_dom)
     }
 
     return (
         <div style={{border:0}} className={"mt-3 mb-3 " + styles.post}>
             <div style={{border:0}} className={styles.user}>
-                <ProfilePicture className={styles.userpicture} user={PostUser}></ProfilePicture>
+                <ProfilePicture className={styles.userpicture} user={Post.user}></ProfilePicture>
                 <div>
-                    <div className='fs-4'>{PostUser.displayed_name}</div>
+                    <div className='fs-4'>{Post.user.displayed_name}</div>
                     <div className='fs-6 fw-light'>{(new Date(Post.date)).toDateString()}</div>
                 </div>
             </div>
