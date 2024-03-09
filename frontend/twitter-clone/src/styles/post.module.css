@@ -6,6 +6,9 @@
     align-items: center;
     border: 1px var(--bs-primary-border-subtle) solid;
     padding: 0 !important;
+    min-width: 400px;
+    max-width: 800px !important;
+    overflow: hidden;
 }
 
 .post:hover {
@@ -19,7 +22,7 @@
     align-self: flex-start;
     width: 100%;
     padding: 10px;
-    border-bottom: 1px var(--bs-primary-border-subtle) solid;
+    
 }
 
 .userpicture {
@@ -34,13 +37,12 @@
     width: 100%;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px var(--bs-primary-border-subtle) solid;
 }
 
 .body img,.body iframe {
     width: 100%;
     min-height: 300px;
-    max-height: 800px;
+    max-height: 600px;
 }
 
 .content {
@@ -51,7 +53,8 @@
 }
 
 .commentCreator {
-    border-top: 1px var(--bs-primary-border-subtle) solid;
+    max-width: 800px;
+    margin-inline: auto;
     width: 100%;
 }
 

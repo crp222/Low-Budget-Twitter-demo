@@ -56,7 +56,7 @@ export default function Home(params) {
           User ? <CreatePost user={User}></CreatePost> : ''
         }
       </div>
-      <Container style={{maxWidth:"600px",overflow:"hidden"}}>
+      <Container>
           {
             Posts.map((e,i)=>(
               <Row key={i} className='mt-3 p-0'>

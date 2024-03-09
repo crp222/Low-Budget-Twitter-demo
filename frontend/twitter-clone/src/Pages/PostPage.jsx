@@ -54,8 +54,8 @@ export default function PostPage(params) {
     }
 
   return (
-    <div className='mx-auto' style={{maxWidth:"800px",overflow:"hidden"}}>
-        <div className={styles.post + " mt-2"}>
+    <div>
+        <div className={styles.post + " mt-2 mx-auto"}>
           <div className={styles.user}>
             <ProfilePicture className={styles.userpicture} user={Post.user}></ProfilePicture>
             <div>

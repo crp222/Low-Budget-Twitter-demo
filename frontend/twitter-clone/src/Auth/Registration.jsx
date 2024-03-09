@@ -83,7 +83,7 @@ export default function Registration() {
             </Form.Group>
 
             <Button onClick={()=>registration()} variant="primary" type="button">
-                Submit
+                Regisztráció
             </Button>
         </Form>
         <div style={{display:"none"}} className='fw-bold fs-1 text-white'>Profilkép feltöltése!</div>

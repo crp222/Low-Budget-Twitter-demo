@@ -62,7 +62,7 @@ export default function Post(params) {
   }
 
   return (
-    <div className={styles.post}>
+    <div className={styles.post + " mx-auto"}>
       <div className={styles.user} onClick={()=>navigate("/post/"+Post.id)}>
         <ProfilePicture className={styles.userpicture} user={Post.user}></ProfilePicture>
         <div>

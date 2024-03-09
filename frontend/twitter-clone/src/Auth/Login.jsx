@@ -39,10 +39,10 @@ export default function Login() {
             </Form.Group>
 
             <Form.Group className="mb-3">
-                <a href='/reg'>Registration</a>
+                <a href='/reg'>Regisztráció</a>
             </Form.Group>
             <Button onClick={()=>login()} variant="primary" type="button">
-                Submit
+                Bejelentkezés
             </Button>
         </Form>
     </div>
