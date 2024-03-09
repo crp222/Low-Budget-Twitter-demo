@@ -25,6 +25,7 @@ public class UserInfoService implements UserDetailsService{
 
     // User tokens saved in memory.
     // Tokens should never be regenerated for any user
+    // TODO : TOKEN EXPIRATION
     private final Map<String,String> userTokens = new HashMap<>();
 
     public void createBasicAdmin() {

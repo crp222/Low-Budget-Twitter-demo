@@ -32,7 +32,6 @@ public class PostService {
     private UserInfoService userInfoService;
     
     // For the absolute path of "resources"
-    // TODO : TOKEN EXPIRATION
     @Value("classpath:application.properties")
     private Resource app_properties;
 
