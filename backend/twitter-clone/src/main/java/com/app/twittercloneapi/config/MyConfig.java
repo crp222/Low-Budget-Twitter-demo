@@ -41,7 +41,8 @@ public class MyConfig implements WebMvcConfigurer{
 
 	@Bean
 	public UserDetailsService userDetailsService() {
-		return new UserInfoService();
+		UserInfoService userInfoService = new UserInfoService();
+		return userInfoService;
 	}
 
 	@Bean

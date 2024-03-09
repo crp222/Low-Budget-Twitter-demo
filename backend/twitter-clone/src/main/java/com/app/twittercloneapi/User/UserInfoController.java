@@ -77,10 +77,19 @@ public class UserInfoController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestParam String username,@RequestParam String password){
+        if(username.equals("admin"))
+            // Basic admin account has to exist!
+            userInfoService.createBasicAdmin();
+
         Authentication authenticationRequest = UsernamePasswordAuthenticationToken.unauthenticated(username,password);
         try {
             authenticationManager.authenticate(authenticationRequest);
-            String token = encryptor.encrypt(username+":"+password);  // TODO : Expiration
+            String data = username+":"+password;
+            String token = userInfoService.getToken(data);
+            if(token == null){
+                token = encryptor.encrypt(data);
+                userInfoService.setUserToken(data, token);
+            }
             return ResponseEntity.ok().body(token);
         }catch(Exception err){
             return ResponseEntity.status(401).body("Rossz felhasznalonev vagy jelszo!");

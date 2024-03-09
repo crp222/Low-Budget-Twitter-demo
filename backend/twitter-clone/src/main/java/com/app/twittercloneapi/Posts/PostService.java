@@ -173,4 +173,8 @@ public class PostService {
         res.put("user",userInfoService.loadUserById((int)res.get("user")));
         return res;
     }
+
+    public void deletePost(int id) throws Exception {
+        postRepository.deleteById(id);
+    }
 }

@@ -27,6 +27,7 @@ public class SecurityConfig {
 			.csrf((crfs) -> crfs.disable())
 			.authorizeHttpRequests((requests) -> requests
 				.requestMatchers("/","/reg","/login","/public/**").permitAll()
+				.requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
 				.anyRequest().authenticated()
 			)
 			.addFilter(filter);

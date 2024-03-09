@@ -5,8 +5,8 @@ import styles from "../styles/post.module.css"
 import ProfilePicture from "../components/Profile/ProfilePicture"
 import Row from "react-bootstrap/Row"
 import Container from 'react-bootstrap/Container'
-import PostComponent from "../components/HomePage/Post"
-import CreatePost from '../components/HomePage/CreatePost'
+import PostComponent from "../components/Basic/Post"
+import CreatePost from '../components/Basic/CreatePost'
 
 export default function PostPage(params) {
 

@@ -73,4 +73,15 @@ public class PostController {
             return ResponseEntity.internalServerError().body(null);
         }
     }
+
+    @PostMapping("/admin/post/delete/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable String id){
+        try {
+            int id_int = Integer.parseInt(id);
+            postService.deletePost(id_int);
+            return ResponseEntity.ok(null);
+        }catch(Exception ignore){
+            return ResponseEntity.internalServerError().body(null);
+        }
+    }
 }

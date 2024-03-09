@@ -109,6 +109,14 @@ public class UserInfo implements UserDetails {
         authoritySet.add(new SimpleGrantedAuthority(this.role));
         return authoritySet;
     }
+    
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
 
     public boolean isIsEnabled() {
         return this.isEnabled;

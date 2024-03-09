@@ -8,6 +8,7 @@ import AlertLink from 'react-bootstrap/AlertLink'
 import Comment from './Comment'
 import ENV from "../../env"
 import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie'
 
 
 export default function Post(params) {
@@ -61,8 +62,29 @@ export default function Post(params) {
     setResourceDom(resource_dom)
   }
 
+  const DeletePostButton = () => {
+
+      function deletePost() {
+        fetch(ENV.API_DOMAIN+"/admin/post/delete/"+Post.id,{
+          method : "post",
+          headers : { 
+            "Authorization" : Cookies.get("usertoken")
+          }
+        });
+        window.location.reload();
+      }
+
+      if(User && User.role == "ADMIN")
+        return (
+            <div className={styles.deleteButton} onClick={()=>deletePost()}>
+              X
+            </div>
+          )
+  }
+
   return (
     <div className={styles.post + " mx-auto"}>
+      <DeletePostButton></DeletePostButton>
       <div className={styles.user} onClick={()=>navigate("/post/"+Post.id)}>
         <ProfilePicture className={styles.userpicture} user={Post.user}></ProfilePicture>
         <div>

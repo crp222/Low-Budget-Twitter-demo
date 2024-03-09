@@ -29,8 +29,10 @@ public class SecureAuthenticationConverter extends BasicAuthenticationConverter 
             if (delim == -1) {
                 throw new Exception();
             }
+            String username = token.substring(0, delim);
+            String password = token.substring(delim + 1);
             UsernamePasswordAuthenticationToken result = UsernamePasswordAuthenticationToken
-                .unauthenticated(token.substring(0, delim), token.substring(delim + 1));
+                .unauthenticated(username,password);
             result.setDetails(super.getAuthenticationDetailsSource().buildDetails(request));
             return result;
         }catch(Exception e){

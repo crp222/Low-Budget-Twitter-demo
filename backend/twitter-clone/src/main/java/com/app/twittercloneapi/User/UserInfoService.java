@@ -2,6 +2,7 @@ package com.app.twittercloneapi.User;
 
 import java.sql.Blob;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -21,6 +22,22 @@ public class UserInfoService implements UserDetailsService{
     
     @Autowired 
     private PasswordEncoder passwordEncoder;
+
+    // User tokens saved in memory.
+    // Tokens should never be regenerated for any user
+    private final Map<String,String> userTokens = new HashMap<>();
+
+    public void createBasicAdmin() {
+           if(!userInfoRepository.findByUsername("admin").isPresent()){
+            UserInfo admin = new UserInfo();
+            admin.setDisplayedName("ADMIN");
+            admin.setEmail("admin@admin.com");
+            admin.setPassword(passwordEncoder.encode("admin"));
+            admin.setUsername("admin");
+            admin.setRole("ADMIN");
+            userInfoRepository.save(admin);
+        }
+    }
 
     @Override
     public UserInfo loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -65,5 +82,22 @@ public class UserInfoService implements UserDetailsService{
         if(!id.isPresent())
             throw new UserException("Nincs ilyen nevu felhasznalo!");
         return id.get();
+    }
+
+    /**
+     * 
+     * @param data Auth request data
+     * @param token Encoded data
+     */
+    public void setUserToken(String data,String token){
+        userTokens.put(data, token);
+    }
+
+    /**
+     * @param data Auth request data
+     * @return
+     */
+    public String getToken(String data) {
+        return userTokens.get(data);
     }
 }
