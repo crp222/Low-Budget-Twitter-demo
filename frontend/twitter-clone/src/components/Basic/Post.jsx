@@ -24,13 +24,19 @@ export default function Post(params) {
   const [User, setUser] = useState({ displayed_name: "" }); // Current client user 
   const [ResourceDom, setResourceDom] = useState();
   const [Comments, setComments] = useState([]);
-  const [CommentsLoaded, changeCommentsLoaded] = useReducer((state, action) => { return !state }, false);
+  const [CommentsLoaded, changeCommentsLoaded] = useReducer((state, action) => { 
+        if(action === false)
+          return false;
+        return !state
+   }, false);
   const [MoreComments, setMoreComments] = useState(false);
   let navigate = useNavigate(); 
 
   useEffect(() => {
     setUser(params.user);
     setPosts(params.post);
+    setComments([]);
+    changeCommentsLoaded(false);
   }, [params]);
 
   useEffect(()=>{

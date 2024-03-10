@@ -15,4 +15,7 @@ public interface PostRepository extends CrudRepository<Post,Integer>{
 
     @Query("SELECT p FROM Post p WHERE p.parent = ?1 ORDER BY p.date DESC")
     List<Post> postCommentsDateOrderInRange(int id);
+
+    @Query("SELECT p FROM Post p WHERE p.parent = ?1")
+    List<Post> postComments(int id);
 }

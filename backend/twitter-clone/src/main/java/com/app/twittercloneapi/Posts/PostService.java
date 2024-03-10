@@ -174,7 +174,15 @@ public class PostService {
         return res;
     }
 
+    public void deleteComments(int id) throws Exception {
+        List<Post> comments = postRepository.postComments(id);
+        for(Post p : comments) {
+            deletePost(p.getId());
+        }
+    }
+
     public void deletePost(int id) throws Exception {
+        deleteComments(id);
         postRepository.deleteById(id);
     }
 }

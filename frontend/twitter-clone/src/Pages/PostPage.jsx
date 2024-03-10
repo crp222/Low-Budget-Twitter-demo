@@ -38,6 +38,13 @@ export default function PostPage(params) {
           let data = await result.json();
           readPostResource(data);
           setPost(data);
+        }else {
+          setPost({
+            user : {
+              displayed_name : ""
+            },
+            comments : []
+          })
         }
     }
 
