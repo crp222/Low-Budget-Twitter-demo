@@ -30,10 +30,10 @@ SET time_zone = "+00:00";
 CREATE TABLE `posts` (
   `id` int(11) NOT NULL,
   `content` varchar(1000) DEFAULT NULL,
-  `resource` int(11) DEFAULT NULL,
+  `resource` int(11) DEFAULT NULL DEFAULT -1,
   `date` date NOT NULL,
   `user` int(11) NOT NULL,
-  `parent` int(11) DEFAULT NULL
+  `parent` int(11) DEFAULT NULL DEFAULT -1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
